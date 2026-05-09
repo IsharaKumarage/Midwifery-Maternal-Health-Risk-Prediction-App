@@ -1,7 +1,4 @@
-SE4051 — Final Project Submission
-Student: Kumarage M.B.S.I.E
-Index No: IT22606556
-
-Hosted URL: https://YOUR-USERNAME.github.io/midwifesense-showcase/
-
-(Replace the URL above with your actual hosted link before uploading to LMS)
+Student Name: Ishara Kumarage
+Student ID: IT22606556
+GitHub Pages URL: [Insert your GitHub Pages URL here, e.g., https://username.github.io/midwifesense-showcase]
+GitHub Repo URL: [Insert your GitHub Repo URL here]
