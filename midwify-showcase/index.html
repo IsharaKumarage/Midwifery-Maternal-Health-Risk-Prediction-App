@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MidwifeSense AI — ML-Based Midwifery Support App</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-pill">🩺</div>
+    Midwife<span>Sense</span> AI
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#demo">Prototype</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#downloads">Resources</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">B.Sc. (Hons) IT — Interactive Media · SLIIT 2025</div>
+    <h1>Intelligent Antenatal<br>Care for Sri Lankan <em>Midwives</em></h1>
+    <p class="hero-desc">A machine learning–powered mobile application that delivers real-time maternal risk prediction, interactive dashboards, and multimodal alerts — purpose-built for midwives on the front lines of antenatal care.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-chip"><span class="icon">👤</span> Ishara Kumarage — IT22606556</div>
+      <div class="hero-meta-chip"><span class="icon">🏫</span> SLIIT, Sri Lanka</div>
+      <div class="hero-meta-chip"><span class="icon">🔬</span> ML · mHealth · Flutter</div>
+    </div>
+    <div class="cta-row">
+      <a href="#solution" class="btn-primary">Explore the System ↓</a>
+      <a href="#downloads" class="btn-ghost">📄 Research Paper</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <img src="assets/images/mockup-screen.png" alt="Mobile App Mockup" class="hero-image">
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <div class="section-tag">The Problem</div>
+        <h2>Midwives Need <em>Smarter Tools</em></h2>
+        <p class="lead">Despite Sri Lanka's achievements in maternal health, preventable complications persist — especially in rural and semi-urban settings where specialist access is limited and decisions must be made fast, often with paper records alone.</p>
+
+        <div class="problem-stats">
+          <div class="stat-block">
+            <div class="stat-num">23%</div>
+            <div class="stat-desc">Reduction in decision time with the app vs. paper-based workflow</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-num">18→7%</div>
+            <div class="stat-desc">High-risk case identification error rate dropped in simulation trials</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;">Key Gaps Identified</p>
+        <ul class="gap-list">
+          <li class="gap-item">
+            <span class="gap-icon">📱</span>
+            <div class="gap-text"><strong>No midwife-centered mobile apps</strong>All reviewed ML research systems lack real-time mobile deployment integrated into clinical workflows.</div>
+          </li>
+          <li class="gap-item">
+            <span class="gap-icon">📊</span>
+            <div class="gap-text"><strong>No interactive data visualization</strong>No existing system provides live dashboards for monitoring maternal health trends.</div>
+          </li>
+          <li class="gap-item">
+            <span class="gap-icon">🌐</span>
+            <div class="gap-text"><strong>No trilingual support</strong>Sinhala, Tamil, and English support is absent in all reviewed maternal health applications.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution-section" id="solution">
+  <div class="container">
+    <div class="section-tag">The Solution</div>
+    <h2>MidwifeSense AI — <em>What It Does</em></h2>
+    <p class="lead">A Flutter-based cross-platform mobile app that puts a clinical intelligence assistant in every midwife's pocket.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">On-Device ML Risk Prediction</div>
+        <div class="feature-desc">TensorFlow Lite ensemble model (Random Forest + XGBoost) runs directly on the phone, predicting maternal risk in under 2 seconds.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">Interactive Health Dashboards</div>
+        <div class="feature-desc">Visualizations of blood pressure, hemoglobin, and fetal heart rate trends across gestational weeks, color-coded by risk zone.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Voice & Haptic Alerts</div>
+        <div class="feature-desc">Three-tier alert system using voice output in the midwife's chosen language and distinct haptic patterns.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISUAL MEDIA -->
+<section class="media-section" id="demo">
+  <div class="container">
+    <div class="section-tag">Visual &amp; Interactive Media</div>
+    <h2>System in <em>Action</em></h2>
+    <p class="lead">A look inside the application's core modules — from real-time dashboards to the alert pipeline and architecture.</p>
+
+    <div class="media-grid">
+      <div class="media-card">
+        <div class="media-card-header">Dashboard Interface</div>
+        <div class="media-card-body">
+          <img src="assets/images/dashboard.png" alt="Dashboard UI" class="media-image">
+        </div>
+      </div>
+      
+      <div class="media-card">
+        <div class="media-card-header">Alert System</div>
+        <div class="media-card-body">
+          <img src="assets/images/alert-screen.png" alt="Alert Screen UI" class="media-image">
+        </div>
+      </div>
+      
+      <div class="media-card" style="grid-column: 1 / -1; max-width: 800px; margin: 0 auto;">
+        <div class="media-card-header">System Architecture</div>
+        <div class="media-card-body">
+          <img src="assets/images/architecture.png" alt="System Architecture Diagram" class="media-image">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" id="results">
+  <div class="container">
+    <div class="section-tag">Research &amp; Validation</div>
+    <h2>Evidence-Based <em>Outcomes</em></h2>
+    
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-big primary">90.1<span class="result-unit">%</span></div>
+        <div class="result-label">Ensemble ML Model Accuracy (RF + XGBoost, deployed TFLite)</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big secondary">78.5</div>
+        <div class="result-label">System Usability Scale Score — rated "Good"</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big primary">1.4<span class="result-unit">s</span></div>
+        <div class="result-label">Average ML inference latency on mid-range Android device</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section class="downloads-section" id="downloads">
+  <div class="container">
+    <div class="section-tag">Resource Repository</div>
+    <h2>Project <em>Downloads</em></h2>
+
+    <div class="downloads-grid">
+      <a href="docs/thesis-draft.pdf" class="dl-card" target="_blank">
+        <div class="dl-icon">📄</div>
+        <div class="dl-name">Research Thesis</div>
+        <div class="dl-type">.PDF · Draft</div>
+      </a>
+      <a href="docs/abstract.pdf" class="dl-card" target="_blank">
+        <div class="dl-icon">📊</div>
+        <div class="dl-name">Research Abstract</div>
+        <div class="dl-type">.PDF</div>
+      </a>
+      <a href="docs/research-poster.pdf" class="dl-card" target="_blank">
+        <div class="dl-icon">📰</div>
+        <div class="dl-name">Research Poster</div>
+        <div class="dl-type">.PDF</div>
+      </a>
+      <a href="docs/sus-evaluation.xlsx" class="dl-card" target="_blank">
+        <div class="dl-icon">📋</div>
+        <div class="dl-name">SUS Evaluation</div>
+        <div class="dl-type">.XLSX</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">MidwifeSense AI</div>
+    <div style="font-size:0.78rem;margin-top:0.4rem;color:rgba(255,255,255,0.4);">
+      Machine Learning–Based Interactive Mobile Application<br>for Early Risk Detection and Midwifery Support
+    </div>
+  </div>
+  <div class="footer-meta">
+    <div><span>Ishara Kumarage</span> — IT22606556</div>
+    <div>B.Sc. (Hons) IT — Interactive Media</div>
+    <div>Sri Lanka Institute of Information Technology · 2025</div>
+  </div>
+</footer>
+
+</body>
+</html>

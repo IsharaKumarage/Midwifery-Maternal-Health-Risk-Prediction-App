@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MidwifeSense AI — ML-Based Midwifery Support App</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #E8527A;
+    --rose-light: #F4A0B5;
+    --rose-pale: #FDF0F4;
+    --teal: #1A7A6E;
+    --teal-light: #2EB89E;
+    --teal-pale: #E8F7F5;
+    --ink: #0F1923;
+    --ink-mid: #2D3E50;
+    --ink-soft: #5A7184;
+    --cream: #FBF8F5;
+    --white: #FFFFFF;
+    --amber: #F5A623;
+    --red-risk: #E8404A;
+    --green-safe: #2EB89E;
+    --border: rgba(15,25,35,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 4rem;
+    height: 72px;
+    background: rgba(251,248,245,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; color: var(--ink);
+    text-decoration: none; display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo span { color: var(--rose); }
+  .nav-pill {
+    background: var(--rose); color: white;
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.85rem; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--rose); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 4rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: -200px; top: -100px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(232,82,122,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 8s ease-in-out infinite;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; left: 30%; bottom: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(26,122,110,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 10s ease-in-out infinite reverse;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+  .hero-text { position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--rose-pale); border: 1px solid rgba(232,82,122,0.2);
+    color: var(--rose); padding: 6px 16px; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge::before { content: '●'; font-size: 0.5rem; }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.2rem);
+    line-height: 1.1; font-weight: 900; color: var(--ink);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em { color: var(--rose); font-style: normal; }
+
+  .hero-desc {
+    font-size: 1.05rem; color: var(--ink-soft); line-height: 1.7;
+    max-width: 520px; margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+    font-weight: 300;
+  }
+
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .hero-meta-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: white; border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 0.82rem; color: var(--ink-mid); font-weight: 500;
+  }
+  .hero-meta-chip .icon { color: var(--teal); font-size: 1rem; }
+
+  .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.4s ease both; }
+  .btn-primary {
+    background: var(--rose); color: white;
+    padding: 14px 28px; border-radius: 10px;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+    transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 20px rgba(232,82,122,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(232,82,122,0.4); }
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    padding: 14px 28px; border-radius: 10px;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+    border: 1.5px solid var(--border); transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+
+  /* Hero Visual */
+  .hero-visual { position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; }
+
+  .phone-mockup {
+    width: 280px; height: 560px;
+    background: var(--ink);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 0 40px 80px rgba(15,25,35,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+    animation: floatPhone 6s ease-in-out infinite;
+  }
+  @keyframes floatPhone {
+    0%,100% { transform: translateY(0px) rotate(-3deg); }
+    50% { transform: translateY(-15px) rotate(-3deg); }
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    background: #1C2E3D; border-radius: 30px; overflow: hidden;
+    position: relative;
+  }
+  .phone-notch {
+    width: 80px; height: 22px; background: var(--ink);
+    border-radius: 0 0 14px 14px; margin: 0 auto;
+    position: relative; z-index: 10;
+  }
+  .phone-content { padding: 8px 14px; }
+  .phone-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .phone-app-name { color: white; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; }
+  .phone-status {
+    width: 8px; height: 8px; background: var(--green-safe); border-radius: 50%;
+    box-shadow: 0 0 8px var(--green-safe);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity: 0.4; } }
+
+  .risk-card {
+    background: rgba(255,255,255,0.06); border-radius: 12px; padding: 12px;
+    margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.08);
+  }
+  .risk-label { font-size: 0.55rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .risk-value { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 6px; }
+  .risk-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 100px; overflow: hidden; }
+  .risk-fill { height: 100%; border-radius: 100px; transition: width 2s ease; }
+  .risk-fill.high { background: linear-gradient(90deg, #F59A23, #E8404A); width: 78%; }
+  .risk-fill.normal { background: linear-gradient(90deg, #2EB89E, #1A7A6E); width: 42%; }
+  .risk-fill.warn { background: linear-gradient(90deg, #F5A623, #E8B820); width: 61%; }
+
+  .vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .vital-chip {
+    background: rgba(255,255,255,0.05); border-radius: 10px; padding: 8px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .vital-label { font-size: 0.48rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; }
+  .vital-val { font-size: 0.85rem; font-weight: 700; margin-top: 2px; }
+  .vital-val.ok { color: #2EB89E; }
+  .vital-val.warn { color: #F5A623; }
+  .vital-val.alert { color: #E8404A; }
+
+  .alert-pill {
+    background: rgba(232,82,122,0.15); border: 1px solid rgba(232,82,122,0.3);
+    border-radius: 8px; padding: 8px 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .alert-pill-icon { font-size: 0.9rem; }
+  .alert-pill-text { font-size: 0.52rem; color: rgba(255,255,255,0.8); line-height: 1.4; }
+
+  /* Floating badges */
+  .float-badge {
+    position: absolute; background: white;
+    border-radius: 12px; padding: 10px 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .badge-accuracy {
+    top: 10%; right: -30px;
+    animation: floatBadge1 5s ease-in-out infinite;
+  }
+  .badge-sus {
+    bottom: 20%; left: -40px;
+    animation: floatBadge2 6s ease-in-out infinite;
+  }
+  @keyframes floatBadge1 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes floatBadge2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  .badge-num { font-size: 1.4rem; font-weight: 700; color: var(--ink); }
+  .badge-label { font-size: 0.72rem; color: var(--ink-soft); }
+  .badge-num span { color: var(--rose); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; }
+  .section-tag {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 900; line-height: 1.15;
+    color: var(--ink); margin-bottom: 1.2rem;
+  }
+  h2 em { color: var(--rose); font-style: normal; }
+  .lead { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.8; max-width: 640px; font-weight: 300; }
+
+  /* ── PROBLEM ── */
+  .problem-section { background: var(--ink); color: white; }
+  .problem-section .section-tag { color: var(--rose-light); }
+  .problem-section h2 { color: white; }
+  .problem-section .lead { color: rgba(255,255,255,0.6); }
+
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .problem-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .stat-block {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 1.5rem;
+    transition: background 0.3s;
+  }
+  .stat-block:hover { background: rgba(255,255,255,0.09); }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--rose-light); line-height: 1; margin-bottom: 0.4rem; }
+  .stat-desc { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  .gap-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+  .gap-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: rgba(255,255,255,0.04); border-radius: 12px; padding: 1.2rem;
+    border-left: 3px solid var(--rose);
+  }
+  .gap-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+  .gap-text { font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .gap-text strong { color: white; display: block; margin-bottom: 2px; }
+
+  /* ── SOLUTION ── */
+  .solution-section { background: var(--cream); }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .feature-card {
+    background: white; border-radius: 20px; padding: 2rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--rose), var(--rose-light));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+  .feature-card:hover::before { transform: scaleX(1); }
+  .feature-icon {
+    width: 50px; height: 50px; border-radius: 14px;
+    background: var(--rose-pale); display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.2rem;
+  }
+  .feature-icon.teal { background: var(--teal-pale); }
+  .feature-icon.amber { background: #FFF8EC; }
+  .feature-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
+  .feature-desc { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.7; }
+
+  /* ── VISUAL MEDIA ── */
+  .media-section { background: white; }
+  .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+  .media-card {
+    border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--border); background: var(--cream);
+  }
+  .media-card-header {
+    padding: 1rem 1.5rem; background: white;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem; font-weight: 600; color: var(--ink-mid);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .media-card-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-red { background: #FF5F57; }
+  .dot-yellow { background: #FEBC2E; }
+  .dot-green { background: #28C840; }
+  .media-card-body { padding: 1.5rem; }
+
+  /* Chart visual */
+  .chart-container { height: 180px; position: relative; }
+  .chart-svg { width: 100%; height: 100%; }
+  .chart-labels { display: flex; justify-content: space-between; margin-top: 8px; }
+  .chart-label { font-size: 0.65rem; color: var(--ink-soft); }
+
+  /* Architecture diagram */
+  .arch-diagram { display: flex; flex-direction: column; gap: 10px; }
+  .arch-layer {
+    background: white; border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .arch-layer-icon { font-size: 1.1rem; width: 32px; text-align: center; }
+  .arch-layer-name { font-size: 0.78rem; font-weight: 600; color: var(--ink); }
+  .arch-layer-desc { font-size: 0.7rem; color: var(--ink-soft); margin-left: auto; font-family: 'DM Mono', monospace; }
+  .arch-arrow { text-align: center; color: var(--rose); font-size: 0.8rem; }
+
+  /* Alert workflow */
+  .alert-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .flow-step {
+    background: white; border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 0.75rem; font-weight: 600; color: var(--ink);
+    text-align: center; flex: 1; min-width: 80px;
+  }
+  .flow-step.trigger { border-color: var(--rose); background: var(--rose-pale); color: var(--rose); }
+  .flow-step.action { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); }
+  .flow-arrow { color: var(--ink-soft); font-size: 0.9rem; flex-shrink: 0; }
+
+  /* Language chips */
+  .lang-demo { display: flex; flex-direction: column; gap: 12px; }
+  .lang-row { display: flex; align-items: center; gap: 12px; }
+  .lang-flag { font-size: 1.2rem; width: 32px; text-align: center; }
+  .lang-text-block { flex: 1; background: white; border-radius: 8px; padding: 8px 14px; border: 1px solid var(--border); }
+  .lang-name { font-size: 0.65rem; color: var(--ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .lang-phrase { font-size: 0.82rem; color: var(--ink); font-weight: 500; }
+
+  /* ── RESULTS ── */
+  .results-section { background: var(--cream); }
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .result-card {
+    background: white; border-radius: 20px; padding: 2rem;
+    border: 1px solid var(--border); text-align: center;
+    transition: transform 0.3s;
+  }
+  .result-card:hover { transform: translateY(-4px); }
+  .result-big { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; line-height: 1; }
+  .result-big.rose { color: var(--rose); }
+  .result-big.teal { color: var(--teal); }
+  .result-big.amber { color: var(--amber); }
+  .result-unit { font-size: 1.2rem; font-weight: 300; }
+  .result-label { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.5rem; line-height: 1.5; }
+
+  /* ML Table */
+  .ml-table-wrap { margin-top: 2rem; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  thead { background: var(--ink); }
+  th { padding: 14px 20px; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.8); text-align: left; letter-spacing: 0.04em; }
+  td { padding: 14px 20px; font-size: 0.88rem; color: var(--ink); border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--rose-pale); }
+  .model-badge { display: inline-block; background: var(--rose-pale); color: var(--rose); padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+  .model-badge.best { background: rgba(26,122,110,0.1); color: var(--teal); }
+
+  /* ── COMMERCIALIZATION ── */
+  .commercial-section { background: var(--ink); color: white; }
+  .commercial-section .section-tag { color: var(--rose-light); }
+  .commercial-section h2 { color: white; }
+  .commercial-section .lead { color: rgba(255,255,255,0.6); }
+  .commercial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 3rem; }
+  .market-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .market-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;
+    transition: background 0.3s;
+  }
+  .market-card:hover { background: rgba(255,255,255,0.09); }
+  .market-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .market-title { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.3rem; }
+  .market-desc { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  .roadmap { display: flex; flex-direction: column; gap: 0; }
+  .roadmap-item { display: flex; gap: 1.5rem; padding: 1.5rem 0; position: relative; }
+  .roadmap-item:not(:last-child)::after {
+    content: ''; position: absolute; left: 18px; top: 60px; bottom: -12px;
+    width: 2px; background: rgba(255,255,255,0.1);
+  }
+  .roadmap-dot {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
+    border: 2px solid var(--rose); background: rgba(232,82,122,0.15);
+  }
+  .roadmap-phase { font-size: 0.7rem; color: var(--rose-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+  .roadmap-title { font-size: 0.95rem; font-weight: 600; color: white; margin-bottom: 0.3rem; }
+  .roadmap-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* ── DOWNLOADS ── */
+  .downloads-section { background: white; }
+  .downloads-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3rem; }
+  .dl-card {
+    border: 1.5px solid var(--border); border-radius: 16px; padding: 1.5rem;
+    text-align: center; text-decoration: none; color: var(--ink);
+    transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+  }
+  .dl-card:hover { border-color: var(--rose); background: var(--rose-pale); transform: translateY(-4px); }
+  .dl-icon { font-size: 2rem; }
+  .dl-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+  .dl-type { font-size: 0.72rem; color: var(--ink-soft); font-family: 'DM Mono', monospace; }
+  .dl-card:hover .dl-name { color: var(--rose); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.5);
+    padding: 3rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; }
+  .footer-meta { font-size: 0.82rem; text-align: right; line-height: 1.6; }
+  .footer-meta span { color: var(--rose-light); }
+
+  /* ── UTILS ── */
+  .container { max-width: 1200px; margin: 0 auto; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .divider { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 100px 1.5rem 3rem; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .problem-grid, .media-grid, .commercial-grid, .two-col { grid-template-columns: 1fr; }
+    .features-grid, .results-grid { grid-template-columns: 1fr 1fr; }
+    .downloads-grid { grid-template-columns: 1fr 1fr; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+    .footer-meta { text-align: center; }
+    .problem-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-pill">🩺</div>
+    Midwife<span>Sense</span> AI
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#demo">Prototype</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#commercialize">Future</a></li>
+    <li><a href="#downloads">Resources</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">B.Sc. (Hons) IT — Interactive Media · SLIIT 2025</div>
+    <h1>Intelligent Antenatal<br>Care for Sri Lankan <em>Midwives</em></h1>
+    <p class="hero-desc">A machine learning–powered mobile application that delivers real-time maternal risk prediction, interactive dashboards, and multimodal alerts — purpose-built for midwives on the front lines of antenatal care.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-chip"><span class="icon">👤</span> Kumarage M.B.S.I.E — IT22606556</div>
+      <div class="hero-meta-chip"><span class="icon">🏫</span> SLIIT, Sri Lanka</div>
+      <div class="hero-meta-chip"><span class="icon">🔬</span> ML · mHealth · Flutter</div>
+    </div>
+    <div class="cta-row">
+      <a href="#solution" class="btn-primary">Explore the System ↓</a>
+      <a href="#downloads" class="btn-ghost">📄 Research Paper</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <!-- Floating badges -->
+    <div class="float-badge badge-accuracy">
+      <div class="badge-num"><span>90.1</span>%</div>
+      <div class="badge-label">ML Accuracy</div>
+    </div>
+    <div class="float-badge badge-sus">
+      <div class="badge-num"><span>78.5</span></div>
+      <div class="badge-label">SUS Score — Good</div>
+    </div>
+
+    <!-- Phone mockup -->
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="phone-notch"></div>
+        <div class="phone-content">
+          <div class="phone-header">
+            <span class="phone-app-name">MIDWIFESENSE AI</span>
+            <div class="phone-status"></div>
+          </div>
+
+          <div class="risk-card">
+            <div class="risk-label">Overall Maternal Risk</div>
+            <div class="risk-value" style="color:#F5A623;">⚠ High Risk Detected</div>
+            <div class="risk-bar"><div class="risk-fill high"></div></div>
+          </div>
+
+          <div class="vitals-grid">
+            <div class="vital-chip">
+              <div class="vital-label">Systolic BP</div>
+              <div class="vital-val alert">148 mmHg</div>
+            </div>
+            <div class="vital-chip">
+              <div class="vital-label">Hemoglobin</div>
+              <div class="vital-val warn">10.2 g/dL</div>
+            </div>
+            <div class="vital-chip">
+              <div class="vital-label">Blood Sugar</div>
+              <div class="vital-val ok">5.1 mmol/L</div>
+            </div>
+            <div class="vital-chip">
+              <div class="vital-label">Fetal HR</div>
+              <div class="vital-val ok">142 bpm</div>
+            </div>
+          </div>
+
+          <div class="alert-pill">
+            <div class="alert-pill-icon">🔔</div>
+            <div class="alert-pill-text">Elevated BP detected. Voice alert triggered. Consider specialist referral.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <div class="section-tag">The Problem</div>
+        <h2>Midwives Need <em>Smarter Tools</em></h2>
+        <p class="lead">Despite Sri Lanka's achievements in maternal health, preventable complications persist — especially in rural and semi-urban settings where specialist access is limited and decisions must be made fast, often with paper records alone.</p>
+
+        <div class="problem-stats">
+          <div class="stat-block">
+            <div class="stat-num">23%</div>
+            <div class="stat-desc">Reduction in decision time with the app vs. paper-based workflow</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-num">18→7%</div>
+            <div class="stat-desc">High-risk case identification error rate dropped in simulation trials</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-num">0</div>
+            <div class="stat-desc">Existing trilingual midwife-specific apps with real-time ML in Sri Lanka</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-num">26 yrs</div>
+            <div class="stat-desc">Field experience of external supervisor who shaped app requirements</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;">Key Gaps Identified in Existing Systems</p>
+        <ul class="gap-list">
+          <li class="gap-item">
+            <span class="gap-icon">📱</span>
+            <div class="gap-text"><strong>No midwife-centered mobile apps</strong>All reviewed ML research systems lack real-time mobile deployment integrated into clinical workflows.</div>
+          </li>
+          <li class="gap-item">
+            <span class="gap-icon">📊</span>
+            <div class="gap-text"><strong>No interactive data visualization</strong>No existing system provides live dashboards for monitoring maternal health trends during antenatal visits.</div>
+          </li>
+          <li class="gap-item">
+            <span class="gap-icon">🔔</span>
+            <div class="gap-text"><strong>No voice or haptic feedback</strong>Urgent maternal alerts lack multimodal support for low-connectivity rural environments.</div>
+          </li>
+          <li class="gap-item">
+            <span class="gap-icon">🌐</span>
+            <div class="gap-text"><strong>No trilingual support</strong>Sinhala, Tamil, and English support is absent in all reviewed maternal health applications.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution-section" id="solution">
+  <div class="container">
+    <div class="section-tag">The Solution</div>
+    <h2>MidwifeSense AI — <em>What It Does</em></h2>
+    <p class="lead">A Flutter-based cross-platform mobile app that puts a clinical intelligence assistant in every midwife's pocket — from Colombo to the most remote rural health post.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">On-Device ML Risk Prediction</div>
+        <div class="feature-desc">TensorFlow Lite ensemble model (Random Forest + XGBoost) runs directly on the phone, predicting maternal risk in under 2 seconds — even without internet.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon teal">📈</div>
+        <div class="feature-title">Interactive Health Dashboards</div>
+        <div class="feature-desc">Chart.js-powered time-series visualizations of blood pressure, hemoglobin, and fetal heart rate trends across gestational weeks, color-coded by risk zone.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Voice & Haptic Alerts</div>
+        <div class="feature-desc">Three-tier alert system (normal / warning / critical) using voice output in the midwife's chosen language and distinct haptic patterns — even on silent mode.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon amber">🌐</div>
+        <div class="feature-title">Trilingual Interface</div>
+        <div class="feature-desc">Full Sinhala, Tamil, and English support including clinically accurate terminology translations, validated by field midwives and language experts.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon teal">📡</div>
+        <div class="feature-title">Offline-First Architecture</div>
+        <div class="feature-desc">SQLite caching allows full data entry and risk prediction offline. Automatic Firebase synchronization when connectivity resumes — critical for rural settings.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">Explainable AI (SHAP/LIME)</div>
+        <div class="feature-desc">Every risk prediction is accompanied by a plain-language explanation identifying the most influential vital parameters, building midwife trust and understanding.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISUAL MEDIA -->
+<section class="media-section" id="demo">
+  <div class="container">
+    <div class="section-tag">Visual &amp; Interactive Media</div>
+    <h2>System in <em>Action</em></h2>
+    <p class="lead">A look inside the application's core modules — from real-time dashboards to the alert pipeline and multilingual interface design.</p>
+
+    <div class="media-grid">
+      <!-- BP Chart -->
+      <div class="media-card">
+        <div class="media-card-header">
+          <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+          &nbsp; Blood Pressure Trend Dashboard — Weeks 16–36
+        </div>
+        <div class="media-card-body">
+          <div class="chart-container">
+            <svg class="chart-svg" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
+              <!-- Risk zones -->
+              <rect x="0" y="0" width="500" height="50" fill="rgba(232,64,74,0.06)" rx="4"/>
+              <text x="490" y="16" text-anchor="end" font-size="9" fill="#E8404A" font-family="DM Mono">HIGH</text>
+              <rect x="0" y="50" width="500" height="50" fill="rgba(245,166,35,0.06)" rx="4"/>
+              <text x="490" y="66" text-anchor="end" font-size="9" fill="#F5A623" font-family="DM Mono">WARN</text>
+              <rect x="0" y="100" width="500" height="60" fill="rgba(46,184,158,0.06)" rx="4"/>
+              <text x="490" y="116" text-anchor="end" font-size="9" fill="#2EB89E" font-family="DM Mono">NORMAL</text>
+
+              <!-- Systolic line -->
+              <polyline points="30,110 90,95 150,90 210,70 270,55 330,40 390,45 450,38"
+                fill="none" stroke="#E8527A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Diastolic line -->
+              <polyline points="30,130 90,125 150,122 210,115 270,108 330,95 390,98 450,92"
+                fill="none" stroke="#1A7A6E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5,3"/>
+
+              <!-- Data points -->
+              <circle cx="390" cy="45" r="5" fill="#E8527A" opacity="0.8"/>
+              <circle cx="450" cy="38" r="5" fill="#E8527A"/>
+              <text x="460" y="34" font-size="9" fill="#E8527A" font-family="DM Mono">148</text>
+            </svg>
+            <div class="chart-labels">
+              <span class="chart-label">Wk 16</span><span class="chart-label">Wk 20</span>
+              <span class="chart-label">Wk 24</span><span class="chart-label">Wk 28</span>
+              <span class="chart-label">Wk 32</span><span class="chart-label">Wk 36</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:0.8rem;">
+            <span style="font-size:0.72rem;color:var(--rose);display:flex;align-items:center;gap:4px;">━ Systolic BP</span>
+            <span style="font-size:0.72rem;color:var(--teal);display:flex;align-items:center;gap:4px;">╌ Diastolic BP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Architecture -->
+      <div class="media-card">
+        <div class="media-card-header">
+          <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+          &nbsp; System Architecture Overview
+        </div>
+        <div class="media-card-body">
+          <div class="arch-diagram">
+            <div class="arch-layer">
+              <div class="arch-layer-icon">📱</div>
+              <div>
+                <div class="arch-layer-name">Flutter Mobile App</div>
+                <div style="font-size:0.68rem;color:var(--ink-soft);">UI · Data Entry · Dashboard · Alerts</div>
+              </div>
+              <div class="arch-layer-desc">Android / iOS</div>
+            </div>
+            <div class="arch-arrow">↕ REST API (Node.js / Django)</div>
+            <div class="arch-layer">
+              <div class="arch-layer-icon">🧠</div>
+              <div>
+                <div class="arch-layer-name">TFLite ML Engine</div>
+                <div style="font-size:0.68rem;color:var(--ink-soft);">On-device inference · SHAP explainability</div>
+              </div>
+              <div class="arch-layer-desc">&lt; 2 sec</div>
+            </div>
+            <div class="arch-arrow">↕ Auto-sync</div>
+            <div class="arch-layer">
+              <div class="arch-layer-icon">🗄️</div>
+              <div>
+                <div class="arch-layer-name">Database Layer</div>
+                <div style="font-size:0.68rem;color:var(--ink-soft);">SQLite (offline) · Firebase · MySQL</div>
+              </div>
+              <div class="arch-layer-desc">AES-256</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert Workflow -->
+      <div class="media-card">
+        <div class="media-card-header">
+          <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+          &nbsp; Voice &amp; Haptic Alert Workflow
+        </div>
+        <div class="media-card-body">
+          <div style="display:flex;flex-direction:column;gap:0.8rem;">
+            <div style="font-size:0.78rem;font-weight:600;color:var(--ink-mid);margin-bottom:0.2rem;">Trigger → Classify → Alert</div>
+            <div class="alert-flow">
+              <div class="flow-step trigger">Vital Input</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step">TFLite Inference</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step">Risk Score</div>
+            </div>
+            <div class="alert-flow">
+              <div class="flow-step" style="border-color:var(--amber);background:#FFF8EC;color:#B7750A;">⚠ Warning</div>
+              <div class="flow-arrow">or</div>
+              <div class="flow-step" style="border-color:var(--red-risk);background:#FEF2F2;color:var(--red-risk);">🚨 Critical</div>
+            </div>
+            <div class="alert-flow">
+              <div class="flow-step action">🔊 Voice Alert</div>
+              <div class="flow-arrow">+</div>
+              <div class="flow-step action">📳 Haptic</div>
+              <div class="flow-arrow">+</div>
+              <div class="flow-step action">📊 SHAP Explain</div>
+            </div>
+            <p style="font-size:0.72rem;color:var(--ink-soft);margin-top:0.4rem;">Voice output delivered in selected language (Sinhala / Tamil / English). Distinct haptic patterns distinguish warning from critical states.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multilingual Demo -->
+      <div class="media-card">
+        <div class="media-card-header">
+          <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+          &nbsp; Trilingual Interface — Alert Phrasing
+        </div>
+        <div class="media-card-body">
+          <div class="lang-demo">
+            <div class="lang-row">
+              <div class="lang-flag">🇬🇧</div>
+              <div class="lang-text-block">
+                <div class="lang-name">English</div>
+                <div class="lang-phrase">High blood pressure detected. Refer to specialist.</div>
+              </div>
+            </div>
+            <div class="lang-row">
+              <div class="lang-flag">🇱🇰</div>
+              <div class="lang-text-block">
+                <div class="lang-name">Sinhala</div>
+                <div class="lang-phrase" style="font-size:0.9rem;">අධික රුධිර පීඩනය හඳුනා ගන්නා ලදී. විශේෂඥ වෛද්‍යවරයා වෙත යොමු කරන්න.</div>
+              </div>
+            </div>
+            <div class="lang-row">
+              <div class="lang-flag">🇱🇰</div>
+              <div class="lang-text-block">
+                <div class="lang-name">Tamil</div>
+                <div class="lang-phrase" style="font-size:0.9rem;">அதிக இரத்த அழுத்தம் கண்டறியப்பட்டது. நிபுணரிடம் அனுப்புங்கள்.</div>
+              </div>
+            </div>
+            <p style="font-size:0.72rem;color:var(--ink-soft);">All Sinhala participants confirmed translated clinical terminology was accurate and natural — a first for Sri Lankan midwifery applications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" id="results">
+  <div class="container">
+    <div class="section-tag">Research &amp; Validation</div>
+    <h2>Evidence-Based <em>Outcomes</em></h2>
+    <p class="lead">Validated through clinical simulation trials with 18 midwifery and nursing students, and rigorous ML model evaluation on anonymized maternal datasets.</p>
+
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-big rose">90.1<span class="result-unit">%</span></div>
+        <div class="result-label">Ensemble ML Model Accuracy (RF + XGBoost, deployed TFLite)</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big teal">78.5</div>
+        <div class="result-label">System Usability Scale Score — rated "Good" (industry average: 68)</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big amber">23<span class="result-unit">%</span></div>
+        <div class="result-label">Reduction in clinical decision-making time vs. paper-based workflow</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big rose">1.4<span class="result-unit">s</span></div>
+        <div class="result-label">Average ML inference latency on mid-range Android device</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big teal">18→7<span class="result-unit">%</span></div>
+        <div class="result-label">High-risk identification error rate drop in simulation trials</div>
+      </div>
+      <div class="result-card">
+        <div class="result-big amber">18</div>
+        <div class="result-label">Midwifery &amp; nursing students in usability evaluation (SUS scored)</div>
+      </div>
+    </div>
+
+    <div class="ml-table-wrap">
+      <p style="font-size:0.85rem;font-weight:600;color:var(--ink-mid);margin-bottom:1rem;margin-top:2.5rem;">ML Model Performance Comparison</p>
+      <table>
+        <thead>
+          <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-Score</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="model-badge">Random Forest</span></td><td>87.3%</td><td>86.9%</td><td>87.1%</td><td>87.0%</td></tr>
+          <tr><td><span class="model-badge">SVM</span></td><td>84.1%</td><td>83.7%</td><td>84.0%</td><td>83.8%</td></tr>
+          <tr><td><span class="model-badge">XGBoost</span></td><td>89.4%</td><td>88.6%</td><td>89.2%</td><td>88.9%</td></tr>
+          <tr><td><span class="model-badge">CNN/LSTM</span></td><td>91.2%</td><td>90.8%</td><td>91.0%</td><td>90.9%</td></tr>
+          <tr><td><span class="model-badge best">★ Ensemble (RF + XGBoost)</span></td><td><strong>90.1%</strong></td><td><strong>89.7%</strong></td><td><strong>90.3%</strong></td><td><strong>90.0%</strong></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.78rem;color:var(--ink-soft);margin-top:0.8rem;">★ Deployed model — chosen for balance of accuracy and on-device inference speed (&lt;2 sec on Android 6.0+)</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMMERCIALIZATION -->
+<section class="commercial-section" id="commercialize">
+  <div class="container">
+    <div class="section-tag">Commercialization &amp; Future Potential</div>
+    <h2>From Research to <em>Real-World Impact</em></h2>
+    <p class="lead">MidwifeSense AI is not just an academic prototype. It represents a deployable, scalable mHealth solution with clear pathways into Sri Lanka's public health infrastructure.</p>
+
+    <div class="commercial-grid">
+      <div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.2rem;">Target Markets &amp; Stakeholders</p>
+        <div class="market-cards">
+          <div class="market-card">
+            <div class="market-icon">🏥</div>
+            <div>
+              <div class="market-title">Ministry of Health &amp; Family Health Bureau</div>
+              <div class="market-desc">Integration with national antenatal care programs and MOH electronic medical records — reaching thousands of public health midwives island-wide.</div>
+            </div>
+          </div>
+          <div class="market-card">
+            <div class="market-icon">🎓</div>
+            <div>
+              <div class="market-title">Midwifery Training Institutions</div>
+              <div class="market-desc">The Learning Support Module makes MidwifeSense AI a clinical training tool for nursing and midwifery schools across Sri Lanka.</div>
+            </div>
+          </div>
+          <div class="market-card">
+            <div class="market-icon">🌏</div>
+            <div>
+              <div class="market-title">Regional &amp; Global mHealth Expansion</div>
+              <div class="market-desc">The cultural adaptation framework is replicable across South and Southeast Asian nations with similar community health worker models.</div>
+            </div>
+          </div>
+          <div class="market-card">
+            <div class="market-icon">📡</div>
+            <div>
+              <div class="market-title">Bluetooth Doppler Device Integration</div>
+              <div class="market-desc">Future Bluetooth integration with portable Doppler devices would enable automated real-time fetal heart rate monitoring without manual entry.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.2rem;">Development Roadmap</p>
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <div class="roadmap-dot">1</div>
+            <div>
+              <div class="roadmap-phase">Phase 1 — Now</div>
+              <div class="roadmap-title">Research Prototype</div>
+              <div class="roadmap-desc">Functional app validated with midwifery students. 90.1% ML accuracy. SUS 78.5. Ready for field trial initiation.</div>
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-dot">2</div>
+            <div>
+              <div class="roadmap-phase">Phase 2 — Near Term</div>
+              <div class="roadmap-title">MOH/FHB Field Deployment Study</div>
+              <div class="roadmap-desc">Partnership with Ministry of Health for multi-provincial pilot with practicing midwives in rural, semi-urban, and urban health centers.</div>
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-dot">3</div>
+            <div>
+              <div class="roadmap-phase">Phase 3 — Mid Term</div>
+              <div class="roadmap-title">EMR Integration &amp; Bluetooth Expansion</div>
+              <div class="roadmap-desc">Connect with national electronic medical records. Add Bluetooth Doppler support. Expand training dataset across all Sri Lankan districts.</div>
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-dot">4</div>
+            <div>
+              <div class="roadmap-phase">Phase 4 — Long Term</div>
+              <div class="roadmap-title">Regional Scaling &amp; SaaS Model</div>
+              <div class="roadmap-desc">White-label adaptation for other South Asian markets. WHO mHealth framework alignment. SaaS licensing to health ministries.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section class="downloads-section" id="downloads">
+  <div class="container">
+    <div class="section-tag">Resource Repository</div>
+    <h2>Project <em>Downloads</em></h2>
+    <p class="lead">Supporting research documents, design assets, and technical resources for academic reviewers, collaborators, and interested stakeholders.</p>
+
+    <div class="downloads-grid">
+      <a href="#" class="dl-card">
+        <div class="dl-icon">📄</div>
+        <div class="dl-name">Research Thesis</div>
+        <div class="dl-type">.PDF · Draft v1</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">📊</div>
+        <div class="dl-name">Research Abstract</div>
+        <div class="dl-type">.PDF · 1 page</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">🎨</div>
+        <div class="dl-name">UI/UX Prototype</div>
+        <div class="dl-type">Figma · Interactive</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">💻</div>
+        <div class="dl-name">GitHub Repository</div>
+        <div class="dl-type">Flutter · TFLite</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">📋</div>
+        <div class="dl-name">SUS Evaluation Data</div>
+        <div class="dl-type">.XLSX · n=18</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">🗂️</div>
+        <div class="dl-name">ML Model Cards</div>
+        <div class="dl-type">.PDF · Performance</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">🎞️</div>
+        <div class="dl-name">Demo Video</div>
+        <div class="dl-type">.MP4 · App walkthrough</div>
+      </a>
+      <a href="#" class="dl-card">
+        <div class="dl-icon">📰</div>
+        <div class="dl-name">Research Poster</div>
+        <div class="dl-type">.PDF · A1 format</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">MidwifeSense AI</div>
+    <div style="font-size:0.78rem;margin-top:0.4rem;color:rgba(255,255,255,0.4);">
+      Machine Learning–Based Interactive Mobile Application<br>for Early Risk Detection and Midwifery Support
+    </div>
+  </div>
+  <div class="footer-meta">
+    <div><span>Kumarage M.B.S.I.E</span> — IT22606556</div>
+    <div>B.Sc. (Hons) IT — Interactive Media</div>
+    <div>Sri Lanka Institute of Information Technology · 2025</div>
+    <div style="margin-top:0.4rem;">SE4051 – Trends in Digital Media · Final Project</div>
+  </div>
+</footer>
+
+</body>
+</html>
