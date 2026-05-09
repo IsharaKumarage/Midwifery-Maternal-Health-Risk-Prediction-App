@@ -12,20 +12,21 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="nav-pill">🩺</div>
+    <img src="assets/images/logo.jpeg" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px; object-fit: cover;">
     Midwife<span>Sense</span> AI
   </a>
   <ul class="nav-links">
     <li><a href="#problem">Problem</a></li>
     <li><a href="#solution">Solution</a></li>
     <li><a href="#demo">Prototype</a></li>
+    <li><a href="#evidence">Evidence</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#downloads">Resources</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" style="background-image: linear-gradient(to right, rgba(12, 9, 32, 0.95), rgba(12, 9, 32, 0.8)), url('assets/images/hero-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
   <div class="hero-text">
     <div class="hero-badge">B.Sc. (Hons) IT — Interactive Media · SLIIT 2025</div>
     <h1>Intelligent Antenatal<br>Care for Sri Lankan <em>Midwives</em></h1>
@@ -122,6 +123,13 @@
     <h2>System in <em>Action</em></h2>
     <p class="lead">A look inside the application's core modules — from real-time dashboards to the alert pipeline and architecture.</p>
 
+    <div class="media-card" style="margin-top: 3rem; margin-bottom: 2rem;">
+      <div class="media-card-header">App Demo Video</div>
+      <div class="media-card-body" style="padding: 0;">
+        <video src="assets/images/demo/demo.mp4" controls style="width: 100%; max-height: 600px; background: #000; border-radius: 0 0 20px 20px;"></video>
+      </div>
+    </div>
+
     <div class="media-grid">
       <div class="media-card">
         <div class="media-card-header">Dashboard Interface</div>
@@ -142,6 +150,30 @@
         <div class="media-card-body">
           <img src="assets/images/architecture.png" alt="System Architecture Diagram" class="media-image">
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE -->
+<section class="evidence-section" id="evidence" style="background: var(--bg-card);">
+  <div class="container">
+    <div class="section-tag">Field Work</div>
+    <h2>Clinical <em>Validation</em> & Evidence</h2>
+    <p class="lead">Glimpses from our field testing and clinical validation sessions with midwifery professionals.</p>
+    
+    <div class="media-grid" style="margin-top: 3rem;">
+      <div class="media-card">
+        <img src="assets/images/evidence/IMG 1.jpeg" alt="Field Testing 1" style="width: 100%; height: 280px; object-fit: cover; display: block;">
+      </div>
+      <div class="media-card">
+        <img src="assets/images/evidence/IMG3.jpeg" alt="Field Testing 2" style="width: 100%; height: 280px; object-fit: cover; display: block;">
+      </div>
+      <div class="media-card" style="padding: 0; background: #000;">
+        <video src="assets/images/evidence/IMG2.mp4" controls style="width: 100%; height: 280px; object-fit: cover; display: block; border-radius: 20px;"></video>
+      </div>
+      <div class="media-card" style="padding: 0; background: #000;">
+        <video src="assets/images/evidence/IMG4.mp4" controls style="width: 100%; height: 280px; object-fit: cover; display: block; border-radius: 20px;"></video>
       </div>
     </div>
   </div>
@@ -187,10 +219,10 @@
         <div class="dl-name">Research Abstract</div>
         <div class="dl-type">.PDF</div>
       </a>
-      <a href="docs/research-poster.pdf" class="dl-card" target="_blank">
+      <a href="assets/images/Research Poster.png" class="dl-card" target="_blank">
         <div class="dl-icon">📰</div>
         <div class="dl-name">Research Poster</div>
-        <div class="dl-type">.PDF</div>
+        <div class="dl-type">.PNG (High Res)</div>
       </a>
       <a href="docs/sus-evaluation.xlsx" class="dl-card" target="_blank">
         <div class="dl-icon">📋</div>

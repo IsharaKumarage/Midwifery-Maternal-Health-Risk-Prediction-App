@@ -1,18 +1,18 @@
 @charset "UTF-8";
 
 :root {
-  --primary: #8B5CF6; /* Violet */
-  --primary-light: #A78BFA;
-  --primary-pale: rgba(139, 92, 246, 0.1);
-  --secondary: #D946EF; /* Fuchsia/Pink */
-  --secondary-light: #E879F9;
-  --secondary-pale: rgba(217, 70, 239, 0.1);
+  --primary: #e53e3e; /* Vercel Red */
+  --primary-light: #f56565;
+  --primary-pale: rgba(229, 62, 62, 0.15);
+  --secondary: #2b6cb0; /* Vercel Blue */
+  --secondary-light: #4299e1;
+  --secondary-pale: rgba(43, 108, 176, 0.15);
   --ink: #FFFFFF;
   --ink-mid: #E2E8F0;
   --ink-soft: #94A3B8;
-  --bg-dark: #0F0916;
-  --bg-card: #1A1225;
-  --bg-card-hover: #261B36;
+  --bg-dark: #0c0920; /* Vercel Dark Navy */
+  --bg-card: #1a0e35; /* Vercel Card Purple */
+  --bg-card-hover: #231545;
   --amber: #F5A623;
   --red-risk: #E8404A;
   --green-safe: #2EB89E;
@@ -71,7 +71,7 @@ nav {
   content: '';
   position: absolute; right: -200px; top: -100px;
   width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(229,62,62,0.15) 0%, transparent 70%);
   border-radius: 50%;
   animation: pulse 8s ease-in-out infinite;
 }
@@ -79,7 +79,7 @@ nav {
   content: '';
   position: absolute; left: 30%; bottom: -100px;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(217,70,239,0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(43,108,176,0.1) 0%, transparent 70%);
   border-radius: 50%;
   animation: pulse 10s ease-in-out infinite reverse;
 }
@@ -88,7 +88,7 @@ nav {
 .hero-text { position: relative; z-index: 2; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--primary-pale); border: 1px solid rgba(139,92,246,0.3);
+  background: var(--primary-pale); border: 1px solid rgba(229,62,62,0.3);
   color: var(--primary-light); padding: 6px 16px; border-radius: 100px;
   font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; margin-bottom: 2rem;
@@ -135,9 +135,9 @@ h1 em {
   padding: 14px 28px; border-radius: 10px;
   font-size: 0.9rem; font-weight: 600; text-decoration: none;
   transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
-  box-shadow: 0 4px 20px rgba(139,92,246,0.35);
+  box-shadow: 0 4px 20px rgba(229,62,62,0.35);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(139,92,246,0.5); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(229,62,62,0.5); }
 .btn-ghost {
   background: transparent; color: var(--ink);
   padding: 14px 28px; border-radius: 10px;
@@ -280,7 +280,7 @@ h2 em {
 
 /* ── FOOTER ── */
 footer {
-  background: #09050d; color: var(--ink-soft);
+  background: #060410; color: var(--ink-soft);
   padding: 3rem 4rem;
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border);
