@@ -144,8 +144,8 @@ h1 em {
 
 .hero-visual { position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; }
 .hero-image {
-  width: 100%; max-width: 400px; border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+  width: 100%; max-width: 400px;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
   animation: floatPhone 6s ease-in-out infinite;
 }
 @keyframes floatPhone {
